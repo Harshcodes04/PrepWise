@@ -305,15 +305,28 @@ ${jobDescription}
 Generate the interview report now.
 `;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-    config: {
-      responseMimeType: "application/json",
-      responseSchema: interviewReportSchema,
-    },
-  });
-  return JSON.parse(response.text);
+  let retries = 3;
+  while (retries > 0) {
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: interviewReportSchema,
+        },
+      });
+      return JSON.parse(response.text);
+    } catch (error) {
+      if (error.status === "UNAVAILABLE" && retries > 1) {
+        console.warn(`Model busy, retrying... (${retries - 1} attempts left)`);
+        await new Promise(resolve => setTimeout(resolve, 3000)); // wait 3 seconds
+        retries--;
+      } else {
+        throw error;
+      }
+    }
+  }
 }
 
 module.exports = {
