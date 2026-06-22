@@ -1,6 +1,4 @@
 const { GoogleGenAI } = require("@google/genai");
-const { z } = require("zod");
-const { zodToJsonSchema } = require("zod-to-json-schema");
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_GENAI_API_KEY,
@@ -14,87 +12,117 @@ async function invokeGeminiAi() {
   console.log(response.text);
 }
 
-const interviewReportSchema = z.object({
-  matchScore: z
-    .number()
-    .int()
-    .min(-1)
-    .max(100)
-    .describe(
-      "The match score from -1 to 100, where -1 means no match and 100 means perfect match, indicating how well the candidate matches the job describe,be brutally honest.",
-    ),
-  technicalQuestions: z
-    .array(
-      z.object({
-        question: z
-          .string()
-          .describe("The technical question can be asked in the interview"),
-        intention: z
-          .string()
-          .describe("The intention of interviewerbehind this question"),
-        answer: z
-          .string()
-          .describe(
-            "How to answer this question,what points to be cover,what approach to take,what to avoid, what to emphasize, what to highlight, what to mention, what to avoid mentioning, etc.",
-          ),
-      }),
-    )
-    .describe(
-      "Technical questions that can be asked in the interview with their intention and answer",
-    ),
-  behaviouralQuestions: z
-    .array(
-      z.object({
-        question: z
-          .string()
-          .describe("The behavioural question can be asked in the interview"),
-        intention: z
-          .string()
-          .describe("The intention of interviewerbehind this question"),
-        answer: z
-          .string()
-          .describe(
-            "How to answer this question,what points to be cover,what approach to take,what to avoid, what to emphasize, what to highlight, what to mention, what to avoid mentioning, etc.",
-          ),
-      }),
-    )
-    .describe(
-      "Behavioural questions that can be asked in the interview with their intention and answer",
-    ),
-  skillGap: z
-    .array(
-      z.object({
-        skill: z
-          .string()
-          .describe("The skill gap can be asked in the interview"),
-        reason: z.string().describe("The reason behind this skill gap"),
-      }),
-    )
-    .describe(
-      "List of skill gaps that the candidate has and need to improve along with their severity",
-    ),
-  preparationPlan: z
-    .array(
-      z.object({
-        day: z
-          .number()
-          .describe("The day number in the preparation plan,starting from 1"),
-        focus: z
-          .string()
-          .describe(
-            "The main focus of this day in the preparation plan, e.g. data structures, algorithms, system design, mock interviews, etc.",
-          ),
-        tasks: z
-          .array(z.string())
-          .describe(
-            "The list of tasks to be done on this day in the preparation plan, e.g. read a book, watch a video, solve a problem, etc.",
-          ),
-      }),
-    )
-    .describe(
-      "A day-wise preparation plan for the candidate to follow and improve their skills and prepare for the interview",
-    ),
-});
+const interviewReportSchema = {
+  type: "object",
+  properties: {
+    matchScore: {
+      type: "integer",
+      description:
+        "The match score from -1 to 100, where -1 means no match and 100 means perfect match, indicating how well the candidate matches the job describe,be brutally honest.",
+    },
+    technicalQuestions: {
+      type: "array",
+      description:
+        "Technical questions that can be asked in the interview with their intention and answer",
+      items: {
+        type: "object",
+        properties: {
+          question: {
+            type: "string",
+            description: "The technical question can be asked in the interview",
+          },
+          intention: {
+            type: "string",
+            description: "The intention of interviewerbehind this question",
+          },
+          answer: {
+            type: "string",
+            description:
+              "How to answer this question,what points to be cover,what approach to take,what to avoid, what to emphasize, what to highlight, what to mention, what to avoid mentioning, etc.",
+          },
+        },
+        required: ["question", "intention", "answer"],
+      },
+    },
+    behaviouralQuestions: {
+      type: "array",
+      description:
+        "Behavioural questions that can be asked in the interview with their intention and answer",
+      items: {
+        type: "object",
+        properties: {
+          question: {
+            type: "string",
+            description: "The behavioural question can be asked in the interview",
+          },
+          intention: {
+            type: "string",
+            description: "The intention of interviewerbehind this question",
+          },
+          answer: {
+            type: "string",
+            description:
+              "How to answer this question,what points to be cover,what approach to take,what to avoid, what to emphasize, what to highlight, what to mention, what to avoid mentioning, etc.",
+          },
+        },
+        required: ["question", "intention", "answer"],
+      },
+    },
+    skillGap: {
+      type: "array",
+      description:
+        "List of skill gaps that the candidate has and need to improve along with their severity",
+      items: {
+        type: "object",
+        properties: {
+          skill: {
+            type: "string",
+            description: "The skill gap can be asked in the interview",
+          },
+          severity: {
+            type: "string",
+            enum: ["low", "medium", "high"],
+            description: "The severity of this skill gap",
+          },
+        },
+        required: ["skill", "severity"],
+      },
+    },
+    preparationPlan: {
+      type: "array",
+      description:
+        "A day-wise preparation plan for the candidate to follow and improve their skills and prepare for the interview",
+      items: {
+        type: "object",
+        properties: {
+          day: {
+            type: "integer",
+            description: "The day number in the preparation plan,starting from 1",
+          },
+          focus: {
+            type: "string",
+            description:
+              "The main focus of this day in the preparation plan, e.g. data structures, algorithms, system design, mock interviews, etc.",
+          },
+          tasks: {
+            type: "array",
+            description:
+              "The list of tasks to be done on this day in the preparation plan, e.g. read a book, watch a video, solve a problem, etc.",
+            items: { type: "string" },
+          },
+        },
+        required: ["day", "focus", "tasks"],
+      },
+    },
+  },
+  required: [
+    "matchScore",
+    "technicalQuestions",
+    "behaviouralQuestions",
+    "skillGap",
+    "preparationPlan",
+  ],
+};
 
 async function generateInterviewReport({
   resume,
@@ -282,9 +310,7 @@ Generate the interview report now.
     contents: prompt,
     config: {
       responseMimeType: "application/json",
-      responseSchema: zodToJsonSchema(interviewReportSchema, {
-        name: "InterviewReport",
-      }),
+      responseSchema: interviewReportSchema,
     },
   });
   return JSON.parse(response.text);
