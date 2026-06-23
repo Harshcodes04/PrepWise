@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const tokenBlackListModel = require("../models/blacklist.model");
 
 const registerUserController = async (req, res) => {
-  const { email, username, password } = req.body;
+  const { email, username, password } = req.body || {};
   if (!email || !username || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
@@ -42,7 +42,7 @@ const registerUserController = async (req, res) => {
 };
 
 const loginUserController = async (req, res) => {
-  const { email, username, password } = req.body;
+  const { email, username, password } = req.body || {};
   const user = await userModel.findOne({
     $or: [{ email }, { username }],
   });

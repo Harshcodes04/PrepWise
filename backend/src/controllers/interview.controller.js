@@ -1,20 +1,22 @@
 const pdfParse = require("pdf-parse");
-const generateInterviewReport = require("../services/ai.services");
+const { generateInterviewReport } = require("../services/ai.services");
 const interviewReportModel = require("../models/interviewReport.model");
 
 const generateInterviewReportController = async (req, res) => {
   const resumeFile = req.file;
-  const resumeContent = await pdfParse(resumeFile.buffer);
-  const { selfDescription, jobDescription } = req.body;
+  const resumeContent = await new pdfParse.PDFParse(
+    Uint8Array.from(req.file.buffer),
+  ).getText();
+  const { selfDescription, jobDescription } = req.body || {};
   const interviewReportByAi = await generateInterviewReport({
-    resume: resumeContent,
+    resume: resumeContent.text,
     selfDescription,
     jobDescription,
   });
 
   const interviewReport = await interviewReportModel.create({
     user: req.user._id,
-    resume: resumeContent,
+    resume: resumeContent.text,
     selfDescription,
     jobDescription,
     ...interviewReportByAi,
