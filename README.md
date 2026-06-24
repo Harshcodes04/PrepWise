@@ -1,6 +1,6 @@
 # GenProp
 
-GenProp is a web application featuring a bespoke, terminal-inspired dark-mode interface (Cosmovoid) and backend integration with Gemini AI for generating technical interview reports.
+GenProp is a web application featuring a bespoke backend integration with Gemini AI for generating technical interview reports.
 
 ## Structure
 
