@@ -1,5 +1,5 @@
 {
-  "name": "genprop",
+  "name": "PrepWise",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,16 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Harshcodes04/genProp.git"
+    "url": "git+https://github.com/Harshcodes04/PrepWise.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/Harshcodes04/genProp/issues"
+    "url": "https://github.com/Harshcodes04/PrepWise/issues"
   },
-  "homepage": "https://github.com/Harshcodes04/genProp#readme",
+  "homepage": "https://github.com/Harshcodes04/PrepWise#readme",
   "dependencies": {
     "@google/genai": "^2.8.0",
     "bcryptjs": "^3.0.3",
@@ -32,7 +32,8 @@
     "multer": "^2.2.0",
     "nodemon": "^3.1.14",
     "pdf-parse": "^2.4.5",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "zod-to-json-schema": "^3.25.2"
   },
   "allowScripts": {
     "@google/genai@2.8.0": true,

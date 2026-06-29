@@ -1,6 +1,6 @@
-# GenProp
+# PrepWise
 
-GenProp is a web application featuring a bespoke backend integration with Gemini AI for generating technical interview reports.
+PrepWise is a web application featuring a bespoke backend integration with Gemini AI for generating technical interview reports.
 
 ## Structure
 

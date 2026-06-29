@@ -116,9 +116,11 @@ const interviewReportSchema = {
         required: ["day", "focus", "tasks"],
       },
     },
-    title: z.string.describe(
-      "The title of the interview report, e.g. Software Engineer Interview Report",
-    ),
+    title: {
+      type: "string",
+      description:
+        "The title of the interview report, e.g. Software Engineer Interview Report",
+    },
   },
   required: [
     "matchScore",
@@ -126,6 +128,7 @@ const interviewReportSchema = {
     "behaviouralQuestions",
     "skillGap",
     "preparationPlan",
+    "title",
   ],
 };
 
