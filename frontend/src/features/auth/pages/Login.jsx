@@ -24,7 +24,7 @@ const Login = () => {
   }
   return (
     <main>
-      <div>
+      <div className="form-container">
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-group">

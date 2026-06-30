@@ -25,7 +25,7 @@ const Register = () => {
 
   return (
     <main>
-      <div>
+      <div className="form-container">
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
