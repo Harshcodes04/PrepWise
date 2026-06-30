@@ -26,7 +26,7 @@ const Divider = ({ label = "OR" }) => (
   </div>
 );
 
-const CharCounter = ({ current, max }) => {
+const CharCounter = ({ current = 0, max = 5000 }) => {
   const pct = current / max;
   const cls =
     pct > 0.9 ? "char-counter--danger" : pct > 0.7 ? "char-counter--warn" : "";
