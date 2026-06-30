@@ -80,15 +80,12 @@ const Home = () => {
     });
     navigate(`/interview/plan/${data._id}`);
   };
-  if(loading){
+  if (loading) {
     return (
-      <main className="home">
-        <div className="home__loading">
-          <span className="home__loading-icon">⟳</span>
-          <span className="home__loading-text">Generating your interview plan...</span>
-        </div>
+      <main>
+        <h1>Loading...</h1>
       </main>
-    )
+    );
   }
 
   return (
