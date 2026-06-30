@@ -6,9 +6,10 @@ const Protected = ({ children }) => {
 
   if (loading) {
     return (
-      <main>
-        <h1>Loading...</h1>
-      </main>
+      <div className="iv iv--state">
+        <span className="iv__state-icon">⟳</span>
+        <span className="iv__state-text">Loading...</span>
+      </div>
     );
   }
 
