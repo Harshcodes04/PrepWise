@@ -19,6 +19,9 @@ const NavBar = () => {
       <div className="navbar__links">
         {user ? (
           <>
+            <Link to="/interview/recent-reports" className="navbar__link">
+              Recent Reports
+            </Link>
             <span className="navbar__user">{user.username}</span>
             <button className="navbar__logout" onClick={onLogout}>
               Logout

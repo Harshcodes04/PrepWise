@@ -5,6 +5,7 @@ import Protected from "./features/auth/components/Protected";
 import Home from "./features/interview/pages/Home";
 import Interview from "./features/interview/pages/Interview";
 import NavBar from "./components/NavBar";
+import RecentReports from "./features/interview/pages/RecentReports";
 
 const RootLayout = () => (
   <>
@@ -47,6 +48,14 @@ export const router = createBrowserRouter([
         element: (
           <Protected>
             <Interview />
+          </Protected>
+        ),
+      },
+      {
+        path: "interview/recent-reports",
+        element: (
+          <Protected>
+            <RecentReports />
           </Protected>
         ),
       },
