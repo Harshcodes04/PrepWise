@@ -18,7 +18,7 @@ const InfoBanner = ({ message }) => (
   </div>
 );
 
-const Divider = ({ label = "OR" }) => (
+const Divider = ({ label = "Both required" }) => (
   <div className="divider" aria-hidden="true">
     <span className="divider__line" />
     <span className="divider__label">{label}</span>
@@ -78,7 +78,7 @@ const Home = () => {
       selfDescription,
       resumeFile,
     });
-    
+
     if (data && data._id) {
       navigate(`/interview/plan/${data._id}`);
     }
